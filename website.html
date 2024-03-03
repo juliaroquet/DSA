@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#boton").click(function(){
+    // Obtener usuario + ajax + recorrer info
+    var usuario = $('#usuario').val();
+  
+    $.ajax({
+      method: 'GET',
+      dataType: 'json',
+      url: 'https://api.github.com/users/' + usuario + '/repos',
+      success: function(response) {
+        
+        $('#repositorios').empty();
+       
+        for (var i = 0; i < response.length; i++) {
+          $('#repositorios').append('<tr><td>' + response[i].name + '</td><td>' + response[i].description + '</td><td>' + response[i].watchers_count + '</td></tr>');
+        }
+      },
+      error: function(xhr, status, error) {
+        // Error
+        alert('Error: ' + error);
+      }
+    });
+  });
+});
+</script>
+</head>
+<body>
+
+<h2>GitHub Repositorios</h2>
+
+<input type="text" id="usuario">
+<button id="boton">Buscar</button>
+
+<table border="1">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Descripcion</th>
+      <th>Followers</th>
+    </tr>
+  </thead>
+  <tbody id="repositorios">
+    <!-- Repositories will be displayed here -->
+  </tbody>
+</table>
+
+</body>
+</html>
